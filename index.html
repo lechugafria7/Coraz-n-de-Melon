@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pedacito de mi corazón</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@700;800&display=swap">
+<style>
+:root{--rosa:#ff5c8a;--papel:#fff6e0;--tinta:#3b2a20}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Nunito,system-ui,sans-serif;color:#fff;overflow:hidden;background:#2b1b5a;text-shadow:0 1px 8px #0006}
+
+/* ===== Atardecer ===== */
+#cielo{position:fixed;inset:0;width:100%;height:100%}
+#noche{opacity:0;transition:opacity 5s}
+#estrellas{opacity:0;transition:opacity 5s 1s}
+#sol{transition:transform 5s ease-in-out;transform:translateY(-70px)}
+.s2 #sol{transform:translateY(-20px)}.s3 #sol{transform:translateY(25px)}.s4 #sol{transform:translateY(80px)}
+.s3 #noche{opacity:.3}.s4 #noche{opacity:.6}.s4 #estrellas{opacity:1}
+.nube{animation:deriva 60s linear infinite alternate}
+.nube.b{animation-duration:80s;animation-direction:alternate-reverse}
+@keyframes deriva{from{transform:translateX(-40px)}to{transform:translateX(60px)}}
+.estrella{animation:titila 3s infinite alternate}
+@keyframes titila{to{opacity:.2}}
+.brillo{animation:late 5s ease-in-out infinite alternate;transform-origin:200px 520px}
+@keyframes late{to{transform:scale(1.08)}}
+
+/* ===== Apertura (intro) ===== */
+.s0 #sol{transform:translateY(130px)}.s0 #noche{opacity:.78}.s0 #estrellas{opacity:1}.s0 #luciernagas{opacity:.9}
+#cielo{transition:filter 2.5s}
+.climax #cielo{filter:saturate(1.4) brightness(1.12)}
+.rayos{opacity:.2;transition:opacity 2s;transform-origin:200px 520px;animation:giro 90s linear infinite}
+.climax .rayos{opacity:.6}
+@keyframes giro{to{transform:rotate(360deg)}}
+#intro{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center}
+.abierto #intro{opacity:0;pointer-events:none;transition:opacity 1.8s}
+.i-art{opacity:0;animation:aparece 1.8s var(--d) both}
+@keyframes aparece{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.i-corazon{opacity:1;width:92px;filter:drop-shadow(0 0 18px #ff5c8a);animation:latido 1.6s 3s ease-in-out infinite}
+.i-corazon path{fill:#ff5c8a;fill-opacity:0;stroke:#ffd9e3;stroke-width:4;stroke-dasharray:620;stroke-dashoffset:620;animation:traza 3s .3s ease-in-out forwards,rellena 1.4s 2.8s forwards}
+@keyframes traza{to{stroke-dashoffset:0}}
+@keyframes rellena{to{fill-opacity:1}}
+#intro h1{font-family:Caveat,cursive;font-size:clamp(2.8rem,13vw,4.4rem);margin:6px 0 10px;line-height:1.08;font-weight:700}
+#intro p{font-family:Caveat,cursive;font-size:1.6rem;margin:0;opacity:.9}
+body:not(.abierto) #e1{opacity:0;pointer-events:none}
+.personaje svg{opacity:0}
+#flash{position:fixed;inset:0;z-index:15;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 42%,#fff8d6 0%,#ffd9a0aa 35%,transparent 70%)}
+.climax #flash{animation:destello 1.8s 2.3s ease-out both}
+@keyframes destello{0%{opacity:0}18%{opacity:.9}100%{opacity:0}}
+#lluvia{position:fixed;inset:0;z-index:6;pointer-events:none;overflow:hidden}
+.petalo{position:absolute;top:-30px;left:var(--l);width:10px;height:14px;border-radius:70% 0 70% 0;background:var(--c);opacity:.9;animation:cae var(--t) linear var(--d) infinite}
+@keyframes cae{from{transform:translate(0,-30px) rotate(0)}to{transform:translate(var(--s),110vh) rotate(540deg)}}
+#grande{position:fixed;left:50%;top:49%;width:min(220px,62vw);translate:-50% -50%;opacity:0;pointer-events:none;filter:drop-shadow(0 0 30px #ff5c8a)}
+.climax #grande{animation:viaja 3.6s 3s ease-in-out both}
+@keyframes viaja{0%{opacity:0;top:23%;transform:scale(.05)}28%{opacity:1;top:23%;transform:scale(.5)}58%{top:23%;transform:scale(.56)}100%{opacity:1;top:49%;transform:scale(1)}}
+.onda{position:absolute;left:-30px;top:-30px;width:60px;height:60px;border-radius:50%;border:4px solid #fff3c4;opacity:0}
+.beso .onda{animation:onda 1.8s 2.3s ease-out forwards}
+.beso .onda.b{border-color:var(--rosa);animation-delay:2.6s}
+@keyframes onda{0%{opacity:.9;transform:scale(.2)}100%{opacity:0;transform:scale(9)}}
+.corazones .chispa{color:#fff3c4;font-size:1.2rem}
+.escena{transition:transform 4.5s ease-in-out}
+.escena.beso{transform:scale(1.22)}
+
+/* ===== Etapas ===== */
+.etapa{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:20px;
+ opacity:0;pointer-events:none;transition:opacity .9s}
+.etapa.activa{opacity:1;pointer-events:auto}
+.aviso{font-family:Caveat,cursive;font-size:2rem;text-align:center;margin:0}
+button{font:inherit;font-weight:800;border:0;border-radius:16px;padding:13px 30px;background:var(--rosa);color:#fff;cursor:pointer;font-size:1.05rem;
+ box-shadow:0 5px 0 #c23a63;text-shadow:none;transition:transform .1s,box-shadow .1s}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 #c23a63}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid #fff;outline-offset:4px}
+
+/* ===== Personajes ===== */
+.escena{position:relative;display:flex;justify-content:center;width:min(460px,98vw);cursor:pointer;margin-top:12vh}
+.personaje{width:49%;transition:transform 2.2s cubic-bezier(.5,0,.3,1);transform-origin:50% 100%}
+.personaje svg{width:100%;height:auto;display:block;overflow:visible}
+.abierto .el svg{animation:entraIzq 1.5s cubic-bezier(.2,1.3,.4,1) both,respira 3s 1.5s ease-in-out infinite alternate}
+.abierto .ella svg{animation:entraDer 1.5s .25s cubic-bezier(.2,1.3,.4,1) both,respira 3.4s 1.75s ease-in-out infinite alternate}
+@keyframes entraIzq{from{transform:translateX(-130%);opacity:0}to{transform:none;opacity:1}}
+@keyframes entraDer{from{transform:translateX(130%);opacity:0}to{transform:none;opacity:1}}
+@keyframes respira{to{transform:translateY(-6px) scale(1.015)}}
+.ojos{transform-box:fill-box;transform-origin:center;animation:parpadeo 4.5s infinite}
+.ella .ojos{animation-delay:1.2s}
+@keyframes parpadeo{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
+.dormidos{display:none}
+.cierra .ojos{display:none}.cierra .dormidos{display:inline}
+.ceja{transform-box:fill-box;transition:transform 1.2s}
+.beso .ceja{transform:translateY(-4px)}
+.pucker{display:none}.cierra .sonrisa{display:none}.cierra .pucker{display:inline}
+.rubor{opacity:0;transition:opacity 1.5s}
+.beso .rubor{opacity:.75}
+.beso .el{transform:translateX(16%) rotate(3deg)}
+.beso .ella{transform:translateX(-16%) rotate(-3deg)}
+
+.corazones{position:absolute;left:50%;top:30%;width:0;height:0;pointer-events:none}
+.corazones span{position:absolute;left:-.5em;top:-.5em;font-size:2rem;color:var(--rosa);opacity:0;text-shadow:none}
+.beso .corazones span{animation:explota 2.8s var(--d) infinite ease-out}
+@keyframes explota{0%{opacity:0;transform:translate(0,0) scale(.3)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.3) rotate(var(--r))}}
+
+/* ===== Sobre / carta ===== */
+.sobre{width:min(250px,72vw);cursor:pointer;animation:flota 3s ease-in-out infinite;filter:drop-shadow(0 10px 14px #0005)}
+@keyframes flota{50%{transform:translateY(-10px) rotate(-2deg)}}
+.carta{width:min(460px,92vw);max-height:70vh;overflow:auto;background:var(--papel);color:var(--tinta);border-radius:8px;padding:26px 24px;text-shadow:none;
+ font-family:Caveat,cursive;font-size:1.5rem;line-height:1.35;white-space:pre-wrap;box-shadow:0 14px 44px #0007;-webkit-overflow-scrolling:touch;
+ transform:translateY(40px) scale(.94);transition:transform .9s cubic-bezier(.2,1.2,.4,1)}
+.etapa.activa .carta{transform:none}
+#carta p{margin:0 0 .9em;opacity:0;animation:aparece 1.2s both}
+#carta p:last-child{margin-bottom:0}
+.carta.cierra{transform:translateY(80px) scale(.4)!important;opacity:0;transition:all .7s}
+
+/* ===== Casete ===== */
+.casete{width:min(350px,88vw);border:0;background:none;padding:0;border-radius:16px;box-shadow:none;
+ transform:translateY(120vh) rotate(-8deg);transition:transform 1.4s cubic-bezier(.2,1.1,.3,1);filter:drop-shadow(0 12px 16px #0006)}
+.etapa.activa .casete{transform:none}
+.casete:active{transform:scale(.97)}
+.carrete{transform-box:fill-box;transform-origin:center}
+.suena .carrete{animation:gira 2s linear infinite}
+.suena{animation:baila 1.2s ease-in-out infinite alternate,resplandor 2s ease-in-out infinite alternate}
+@keyframes resplandor{from{filter:drop-shadow(0 12px 16px #0006) drop-shadow(0 0 8px #ffd27a88)}to{filter:drop-shadow(0 12px 16px #0006) drop-shadow(0 0 36px #ffd27a)}}
+.casete{position:relative}
+.nota{position:absolute;bottom:62%;left:var(--l);font-size:1.7rem;color:#fff3c4;opacity:0;pointer-events:none}
+.suena .nota{animation:nota 3.2s var(--d) infinite ease-out}
+@keyframes nota{0%{opacity:0;transform:translate(0,0) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--x),-160px) rotate(var(--r))}}
+/* Corazón en pedacitos */
+.corazon{position:relative;width:min(220px,62vw);aspect-ratio:200/170;margin:64px 0;transition:filter 1s}
+.pieza{position:absolute;border:0;background:none;padding:0;box-shadow:none;border-radius:0;cursor:pointer;
+ transform:translate(var(--tx),var(--ty)) rotate(var(--r));transition:transform 1.1s cubic-bezier(.2,1.2,.4,1)}
+.pieza:active{box-shadow:none}
+.pieza svg{width:100%;height:100%;display:block}
+.pieza:not(.puesta) svg{animation:flota 3s ease-in-out infinite}
+.pieza.puesta{transform:none;cursor:default}
+.completo .corazon{filter:drop-shadow(0 0 26px #ff5c8a);animation:latido 1.2s ease-in-out infinite}
+@keyframes latido{50%{transform:scale(1.07)}}
+.frase{font-family:Caveat,cursive;font-size:1.9rem;text-align:center;margin:0;min-height:2.6em;max-width:92vw}
+/* Luciérnagas y estrella fugaz */
+#luciernagas{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity 4s}
+.s3 #luciernagas,.s4 #luciernagas{opacity:1}
+.luz{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff3a8;box-shadow:0 0 8px 3px #ffe26aaa,0 0 18px 6px #ffd54a55;
+ animation:vaga var(--t) ease-in-out infinite alternate,parpadea var(--q) ease-in-out infinite alternate}
+@keyframes vaga{to{transform:translate(var(--dx),var(--dy))}}
+@keyframes parpadea{from{opacity:.15}to{opacity:1}}
+.fugaz{position:fixed;top:10%;left:80%;width:110px;height:2px;background:linear-gradient(90deg,#fff,transparent);opacity:0;pointer-events:none;transform-origin:left;display:none}
+.s4 .fugaz{display:block;animation:fugaz 8s 2s infinite}
+@keyframes fugaz{0%{opacity:0;transform:translate(0,0) rotate(-30deg)}2%{opacity:1}9%{opacity:0;transform:translate(-300px,173px) rotate(-30deg)}100%{opacity:0}}
+
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes baila{to{transform:rotate(1.5deg) translateY(-4px)}}
+.pista{font-size:1rem;text-align:center;margin:0}
+.pista a{color:#fff;font-weight:800}
+@media (prefers-reduced-motion:reduce){.personaje svg,#carta p{opacity:1!important}*{animation:none!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body class="s0">
+
+<!-- Fondo: atardecer -->
+<svg id="cielo" viewBox="0 0 400 800" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b1b5a"/><stop offset=".35" stop-color="#8a3a86"/>
+      <stop offset=".6" stop-color="#ff6b5e"/><stop offset=".78" stop-color="#ffb35c"/><stop offset="1" stop-color="#ffe29a"/>
+    </linearGradient>
+    <radialGradient id="r"><stop offset="0" stop-color="#fff3c4"/><stop offset=".35" stop-color="#ffc766" stop-opacity=".7"/><stop offset="1" stop-color="#ff8a4d" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="400" height="800" fill="url(#g)"/>
+  <g id="estrellas" fill="#fff">
+    <circle class="estrella" cx="50" cy="60" r="1.6"/><circle class="estrella" cx="120" cy="130" r="1.2" style="animation-delay:1s"/>
+    <circle class="estrella" cx="250" cy="50" r="1.8" style="animation-delay:.5s"/><circle class="estrella" cx="330" cy="140" r="1.3" style="animation-delay:2s"/>
+    <circle class="estrella" cx="190" cy="90" r="1.5" style="animation-delay:1.5s"/><circle class="estrella" cx="370" cy="40" r="1.2"/>
+    <circle class="estrella" cx="80" cy="200" r="1.2" style="animation-delay:2.5s"/><circle class="estrella" cx="290" cy="220" r="1.4" style="animation-delay:.8s"/>
+  </g>
+  <g id="sol"><g class="rayos" id="rayos" fill="#fff3c4"></g><circle class="brillo" cx="200" cy="520" r="190" fill="url(#r)"/><circle cx="200" cy="520" r="62" fill="#fff0b8"/></g>
+  <g fill="#ffd9c0" opacity=".85">
+    <g class="nube"><ellipse cx="90" cy="330" rx="62" ry="13"/><ellipse cx="125" cy="318" rx="38" ry="12"/></g>
+    <g class="nube b"><ellipse cx="300" cy="400" rx="70" ry="12"/><ellipse cx="270" cy="389" rx="36" ry="11"/></g>
+    <g class="nube"><ellipse cx="320" cy="250" rx="48" ry="9"/></g>
+  </g>
+  <path d="M0 610C70 580 140 600 210 590S340 570 400 600V800H0Z" fill="#5a2d63"/>
+  <path d="M0 670C90 640 170 670 260 655S360 640 400 660V800H0Z" fill="#2f1a44"/>
+  <rect id="noche" width="400" height="800" fill="#0b1233"/>
+</svg>
+
+<div id="luciernagas" aria-hidden="true"></div><div class="fugaz" aria-hidden="true"></div>
+
+<div id="flash"></div><div id="lluvia" aria-hidden="true"></div>
+
+<!-- Apertura -->
+<section id="intro">
+  <svg class="i-corazon i-art" style="--d:.2s" viewBox="-4 -4 208 178" aria-hidden="true"><path d="M100 170C20 110 0 70 0 45C0 18 22 0 50 0C75 0 92 14 100 30C108 14 125 0 150 0C178 0 200 18 200 45C200 70 180 110 100 170Z"/></svg>
+  <h1 class="i-art" style="--d:1.6s">Para ti, que eres un pedacito de mi corazón</h1>
+  <button class="i-art" style="--d:3s" id="btnAbrir">Abrir</button>
+</section>
+
+<!-- 1. Escena -->
+<section class="etapa activa" id="e1">
+  <div class="escena" id="escena">
+    <div class="personaje el">
+      <svg viewBox="-20 80 560 600" aria-label="Él">
+        <path d="M72 680C72 600 110 548 178 528H345C412 548 452 600 452 680Z" fill="#404143"/>
+        <rect x="178" y="450" width="167" height="100" rx="10" fill="#404143"/>
+        <circle cx="94" cy="312" r="34" fill="#bf7449"/><circle cx="430" cy="312" r="34" fill="#bf7449"/>
+        <rect x="100" y="170" width="320" height="305" rx="58" fill="#b96f45"/>
+        <path d="M100 278C94 190 128 132 190 112C215 90 262 82 302 90C372 102 420 152 420 235L420 278C408 262 395 242 378 228C330 252 215 238 165 215C132 228 112 250 100 278Z" fill="#3a3b3d"/>
+        <path d="M150 132C150 112 176 100 188 110C172 112 164 122 162 138Z" fill="#3a3b3d"/>
+        <circle cx="160" cy="388" r="30" fill="#ff7a70" class="rubor"/><circle cx="366" cy="388" r="30" fill="#ff7a70" class="rubor"/>
+        <g class="ojos"><ellipse cx="212" cy="300" rx="40" ry="44" fill="#fff"/><ellipse cx="310" cy="308" rx="42" ry="50" fill="#fff"/>
+          <ellipse cx="232" cy="318" rx="15" ry="22" fill="#2f3135"/><ellipse cx="330" cy="320" rx="15" ry="22" fill="#2f3135"/></g>
+        <g class="dormidos" fill="none" stroke="#2f3135" stroke-width="12" stroke-linecap="round"><path d="M175 305q37 32 75 0"/><path d="M270 312q40 34 80 0"/></g>
+        <ellipse cx="258" cy="362" rx="16" ry="21" fill="#a05a38"/>
+        <path class="sonrisa" d="M205 382Q235 416 272 410" fill="none" stroke="#a85a35" stroke-width="11" stroke-linecap="round"/>
+        <ellipse class="pucker" cx="246" cy="402" rx="15" ry="13" fill="#8a3a2a"/>
+      </svg>
+    </div>
+    <div class="corazones" aria-hidden="true"><i class="onda"></i><i class="onda b"></i>
+      <span style="--x:-70px;--y:-130px;--r:-20deg;--d:2.1s">♥</span><span style="--x:0px;--y:-170px;--r:10deg;--d:2.35s">♥</span>
+      <span style="--x:75px;--y:-125px;--r:25deg;--d:2.2s">♥</span><span style="--x:-30px;--y:-90px;--r:-10deg;--d:2.6s">♥</span>
+      <span style="--x:40px;--y:-100px;--r:15deg;--d:2.8s">♥</span>
+    </div>
+    <div class="personaje ella">
+      <svg viewBox="535 80 560 600" aria-label="Ella">
+        <path d="M545 680C548 640 575 620 590 570C540 520 530 440 548 380C560 320 590 270 620 220C640 150 700 110 770 118C795 120 810 135 820 142C835 130 860 114 900 114C970 116 1010 160 1030 215C1075 280 1090 350 1088 420C1086 480 1060 530 1062 580C1065 620 1085 650 1092 680Z" fill="#5a362a"/>
+        <path d="M645 680C650 600 690 545 745 528H885C940 545 980 600 985 680Z" fill="#c13a67"/>
+        <rect x="745" y="450" width="140" height="100" rx="10" fill="#c13a67"/>
+        <path d="M655 345C655 280 690 225 740 212C780 204 805 206 822 208C840 206 880 204 920 216C960 232 977 290 975 345V420Q975 478 920 478H710Q655 478 655 420Z" fill="#f8c3b6"/>
+        <circle cx="700" cy="388" r="30" fill="#ff8a99" class="rubor"/><circle cx="935" cy="388" r="30" fill="#ff8a99" class="rubor"/>
+        <g class="ojos"><ellipse cx="772" cy="300" rx="46" ry="45" fill="#fff"/><ellipse cx="866" cy="308" rx="42" ry="50" fill="#fff"/>
+          <ellipse cx="748" cy="318" rx="16" ry="23" fill="#4a3329"/><ellipse cx="846" cy="320" rx="16" ry="23" fill="#4a3329"/><ellipse cx="748" cy="320" rx="8" ry="13" fill="#231812"/><ellipse cx="846" cy="322" rx="8" ry="13" fill="#231812"/></g>
+        <g class="dormidos" fill="none" stroke="#2f3135" stroke-width="12" stroke-linecap="round"><path d="M730 305q40 32 80 0"/><path d="M826 312q40 34 80 0"/></g>
+        <ellipse cx="815" cy="362" rx="16" ry="21" fill="#eba596"/>
+        <path class="sonrisa" d="M760 384Q788 414 818 408" fill="none" stroke="#e89a89" stroke-width="11" stroke-linecap="round"/>
+        <ellipse class="pucker" cx="790" cy="402" rx="15" ry="13" fill="#c14f5f"/>
+      </svg>
+    </div>
+  </div>
+  <svg id="grande" viewBox="0 0 200 170" aria-hidden="true"><path d="M100 170C20 110 0 70 0 45C0 18 22 0 50 0C75 0 92 14 100 30C108 14 125 0 150 0C178 0 200 18 200 45C200 70 180 110 100 170Z" fill="#ff5c8a"/></svg>
+  <p class="aviso" id="aviso1">Toca para empezar</p>
+  <button id="btnInicio">Empezar</button>
+</section>
+
+<!-- 1.5 Corazón en pedacitos -->
+<section class="etapa" id="ep">
+  <p class="aviso">Junta los pedacitos de mi corazón</p>
+  <div class="corazon">
+    <button class="pieza" aria-label="Pedacito de corazón" style="left:0;top:0;width:50%;height:41.2%;--tx:-60px;--ty:-48px;--r:-22deg"><svg viewBox="0 0 100 70" style="animation-delay:0s"><path d="M100 170C20 110 0 70 0 45C0 18 22 0 50 0C75 0 92 14 100 30C108 14 125 0 150 0C178 0 200 18 200 45C200 70 180 110 100 170Z" fill="#ff5c8a"/></svg></button>
+    <button class="pieza" aria-label="Pedacito de corazón" style="left:50%;top:0;width:50%;height:41.2%;--tx:62px;--ty:-40px;--r:18deg"><svg viewBox="100 0 100 70" style="animation-delay:0.6s"><path d="M100 170C20 110 0 70 0 45C0 18 22 0 50 0C75 0 92 14 100 30C108 14 125 0 150 0C178 0 200 18 200 45C200 70 180 110 100 170Z" fill="#ff5c8a"/></svg></button>
+    <button class="pieza" aria-label="Pedacito de corazón" style="left:0;top:41.2%;width:50%;height:58.8%;--tx:-58px;--ty:58px;--r:14deg"><svg viewBox="0 70 100 100" style="animation-delay:1.2s"><path d="M100 170C20 110 0 70 0 45C0 18 22 0 50 0C75 0 92 14 100 30C108 14 125 0 150 0C178 0 200 18 200 45C200 70 180 110 100 170Z" fill="#ff5c8a"/></svg></button>
+    <button class="pieza" aria-label="Pedacito de corazón" style="left:50%;top:41.2%;width:50%;height:58.8%;--tx:60px;--ty:62px;--r:-18deg"><svg viewBox="100 70 100 100" style="animation-delay:1.8s"><path d="M100 170C20 110 0 70 0 45C0 18 22 0 50 0C75 0 92 14 100 30C108 14 125 0 150 0C178 0 200 18 200 45C200 70 180 110 100 170Z" fill="#ff5c8a"/></svg></button>
+  </div>
+  <p class="frase" id="frase">Toca cada pedacito</p>
+</section>
+
+<!-- 2. Sobre -->
+<section class="etapa" id="e2">
+  <p class="aviso">Hay algo para ti</p>
+  <svg class="sobre" id="sobre" viewBox="0 0 240 160" role="button" tabindex="0" aria-label="Abrir la carta">
+    <rect x="4" y="20" width="232" height="136" rx="10" fill="#f4dfae"/>
+    <path d="M4 28l116 80 116-80" fill="none" stroke="#d4b877" stroke-width="3"/>
+    <path d="M4 20l116 82L236 20z" fill="#ecd08c"/>
+    <path d="M120 82c-14-12-26-2-18 8l18 18 18-18c8-10-4-20-18-8z" fill="#ff5c8a"/>
+  </svg>
+</section>
+
+<!-- 3. Carta -->
+<section class="etapa" id="e3">
+  <div class="carta" id="carta"></div>
+  <button id="btnCerrar">Cerrar la carta</button>
+</section>
+
+<!-- 4. Casete -->
+<section class="etapa" id="e4">
+  <p class="aviso">Ahora, dale play</p>
+  <button class="casete" id="casete" aria-label="Reproducir la canción">
+    <svg viewBox="0 0 340 220">
+      <rect x="4" y="4" width="332" height="212" rx="16" fill="#e9d9b4" stroke="#3b2a20" stroke-width="4"/>
+      <rect x="28" y="22" width="284" height="96" rx="8" fill="#fff6e0" stroke="#3b2a20" stroke-width="3"/>
+      <rect x="28" y="22" width="284" height="22" rx="8" fill="#ff5c8a"/>
+      <text x="44" y="39" font-family="Caveat,cursive" font-size="17" font-weight="700" fill="#fff">Lado A</text>
+      <text id="tDe" x="296" y="39" text-anchor="end" font-family="Caveat,cursive" font-size="17" font-weight="700" fill="#fff"></text>
+      <text x="170" y="76" text-anchor="middle" font-family="Caveat,cursive" font-size="28" font-weight="700" fill="#3b2a20">Pedacito de mi corazón</text>
+      <text x="170" y="96" text-anchor="middle" font-family="Caveat,cursive" font-size="20" fill="#3b2a20">Siddhartha</text>
+      <text id="tPara" x="170" y="113" text-anchor="middle" font-family="Caveat,cursive" font-size="15" fill="#7a5a45"></text>
+      <rect x="62" y="134" width="216" height="66" rx="33" fill="#2a2320"/>
+      <g class="carrete"><circle cx="108" cy="167" r="22" fill="#e9d9b4"/><path d="M108 149v36M90 167h36M95 154l26 26M121 154l-26 26" stroke="#2a2320" stroke-width="3"/><circle cx="108" cy="167" r="6" fill="#2a2320"/></g>
+      <g class="carrete"><circle cx="232" cy="167" r="22" fill="#e9d9b4"/><path d="M232 149v36M214 167h36M219 154l26 26M245 154l-26 26" stroke="#2a2320" stroke-width="3"/><circle cx="232" cy="167" r="6" fill="#2a2320"/></g>
+    </svg>
+    <span class="nota" style="--l:18%;--x:-30px;--r:-15deg;--d:0s">♪</span><span class="nota" style="--l:36%;--x:20px;--r:12deg;--d:0.7s">♫</span><span class="nota" style="--l:55%;--x:-20px;--r:-10deg;--d:1.4s">♪</span><span class="nota" style="--l:72%;--x:30px;--r:18deg;--d:2.1s">♫</span><span class="nota" style="--l:86%;--x:-10px;--r:8deg;--d:2.7s">♪</span>
+  </button>
+  <p class="pista">Toca el casete para escuchar la canción<br><a id="enlace" target="_blank" rel="noopener">¿No se abrió? Toca aquí</a></p>
+</section>
+
+<script>
+/* ====== PERSONALIZA AQUÍ ====== */
+// Link directo de la canción en Spotify.
+const CANCION_URL = "https://open.spotify.com/track/0Xh9S4PGIDMcp2qeoPnp3Q";
+
+const CARTA = `Hola, bonita. Soy yo de nuevo, con algo para ti.
+
+Creo que ya sabes qué puede ser, porque lo hago seguido, pero siempre de una forma distinta y especial. Me gusta que sea único, algo que te haga sonreír con cada ocurrencia que pasa por mi mente.
+
+Hoy se agrega una nueva canción a la playlist, y es muy especial porque habla de algo muy bonito: que ahora eres una parte de mí. Y lo eres. Te metiste en mi corazón de una manera tan única que creo que nadie había estado nunca tan adentro. Esto es una muestra de todo ese amor. Lo hago porque me nace, porque me hace feliz, y porque cada vez que escucho una canción que me recuerda el sentimiento que generas en mí, siento que ahora mi corazón quiere cuidar al tuyo.
+
+Ahora formas parte de mi corazón: un pedazo es completamente tuyo, y puedes estar segura de que siempre lo será. No hay un solo día en que no me hagas feliz. Tal vez te preguntes cómo lo haces, pero es que lo haces natural, con tu compañía y tu apoyo en mis días. Eres mi compañía favorita: si estás a mi lado, puedo descansar y ser feliz. Mi corazón adora esos momentos juntos, donde solo somos tú y yo, donde no importa nada más.
+
+Algún día llegué a pensar que no estaba hecho para estar con alguien y que me quedaría solo, pero llegaste tú y me enseñaste, de una manera diferente, lo que es el amor de verdad: lo bonito que es construirlo desde la base, con fe, con paciencia, con la sencillez de las risas y los momentos juntos. Nuestro amor empezó a crecer cuando los dos lo empezamos a sentir, cuando supimos que habíamos encontrado un lugar donde éramos nosotros, y que no existía otro lugar donde tuviéramos la paz que logramos tener juntos.
+
+Me enseñaste que nunca me había enamorado de la manera correcta. Me enseñaste que el amor real es diferente, es especial, es paciente, y que se construye con toda la fe del mundo. Hubo días en que no nos entendíamos, pero escogimos tener fe y continuar. Gracias a Dios superamos muchas cosas que hoy, si las platicamos, tal vez nos saquen una risa y podamos jugar con ellas. Justo por eso un día te dije que tuvieras paciencia, que íbamos a salir de esos malos días, y que tuvieras fe, porque sabía que si la teníamos íbamos a poder con todo lo que siguiera.
+
+Gracias a eso aprendimos algo valioso: después de toda esa tormenta llega nuestro momento de paz, de ser felices, de disfrutar después de varias etapas. Tal vez aún no lo somos del todo, pero somos más que eso, preciosa. Creo que somos algo más, algo que solo los dos sentimos y que solo nuestros corazones comprenden.
+
+Gracias por estar conmigo en este proceso, preciosa. Te prometo que seguiré mejorando, y sé que los dos lo haremos, porque vamos aprendiendo juntos, poco a poco, a entender cómo es realmente el amor. Esto es algo que nunca había sentido, y ahora comprendo por qué: de ti sí me enamoré, me enamoré de ti completamente. Hoy le pido a Dios que me dé la sabiduría para ser un buen hombre, que pueda comprenderte, cuidarte, adorarte y protegerte de todo lo malo, y que me permita conocer todo de ti, lo que más te duele y lo que te hace pensar, porque quiero darle a tu corazón todo el amor que se merece.
+
+Siempre buscaré la manera de enamorarte día tras día. Eres lo único que quiero en mi presente y en mi futuro, pero gracias por ser también mi pasado.
+
+Te quiero mucho, bonita, y espero que te guste esta canción. Cuando empezó a sonar, sentí algo en el corazón, y justo en ese momento me di cuenta de que era para ti.
+
+Ojalá te guste mucho.
+
+Atentamente:
+Tu Karlitos, jaja.`;
+
+// Etiqueta del casete
+const PARA  = "Mi Irmita";
+const DE    = "Juan Carlos";
+const FECHA = "15 · 10 · 2026";
+
+// Los 4 pedacitos de corazón: escribe aquí tus motivos (frases cortas).
+const PIEZAS = ["Por tu sonrisa", "Por cómo me haces reír", "Por estar conmigo", "Por ser tú"];
+const FRASE_FINAL = "Y así, completo, contigo";
+/* ============================== */
+
+const $ = id => document.getElementById(id);
+const etapas = ["e1","ep","e2","e3","e4"];
+const FASES = [1,2,2,3,4];
+function ir(n){
+  etapas.forEach((e,i)=>$(e).classList.toggle("activa", i===n));
+  document.body.className = "abierto s"+FASES[n];
+  if(n>=3) $("lluvia").innerHTML="";
+  if(n===1){ // el corazón grande se rompe en pedacitos
+    const ps=document.querySelectorAll(".pieza");
+    ps.forEach(b=>{b.style.transition="none";b.style.transform="none";});
+    setTimeout(()=>ps.forEach(b=>{b.style.transition="";b.style.transform="";}),1400);
+  }
+}
+const rnd=(a,b)=>a+Math.random()*(b-a);
+
+// Apertura
+$("btnAbrir").onclick=()=>{ document.body.className="abierto s1"; };
+
+// Rayos de sol
+const NS="http://www.w3.org/2000/svg";
+for(let i=0;i<14;i++){
+  const w=document.createElementNS(NS,"path");
+  w.setAttribute("d","M200 520L186 -300L214 -300Z");
+  w.setAttribute("transform","rotate("+(i*360/14)+" 200 520)");
+  $("rayos").appendChild(w);
+}
+// Más corazones y chispas para el beso
+const cor=document.querySelector(".corazones");
+for(let i=0;i<10;i++){
+  const h=document.createElement("span"); h.textContent="♥";
+  h.style.cssText=`--x:${rnd(-140,140)}px;--y:${rnd(-210,-40)}px;--r:${rnd(-40,40)}deg;--d:${(2.3+rnd(0,1.6)).toFixed(2)}s`;
+  cor.appendChild(h);
+}
+for(let i=0;i<10;i++){
+  const c=document.createElement("span"); c.textContent="✦"; c.className="chispa";
+  c.style.cssText=`--x:${rnd(-190,190)}px;--y:${rnd(-260,60)}px;--r:${rnd(-90,90)}deg;--d:${(2.3+rnd(0,1.8)).toFixed(2)}s`;
+  cor.appendChild(c);
+}
+function petalos(){
+  const col=["#ff8fab","#ffc2d1","#ffd9e3","#ffb3c6"];
+  for(let i=0;i<28;i++){
+    const t=document.createElement("i"); t.className="petalo";
+    t.style.cssText=`--l:${rnd(0,100)}%;--c:${col[i%4]};--t:${rnd(5,9).toFixed(1)}s;--d:${(-rnd(0,6)).toFixed(1)}s;--s:${rnd(-80,80)}px`;
+    $("lluvia").appendChild(t);
+  }
+}
+
+// Luciérnagas
+for(let i=0;i<16;i++){
+  const l=document.createElement("i"); l.className="luz";
+  const r=(a,b)=>a+Math.random()*(b-a);
+  l.style.cssText=`left:${r(5,95)}%;top:${r(35,90)}%;--dx:${r(-60,60)}px;--dy:${r(-60,40)}px;--t:${r(7,13)}s;--q:${r(1.5,4)}s;animation-delay:${-r(0,8)}s,${-r(0,3)}s`;
+  $("luciernagas").appendChild(l);
+}
+
+// Corazón en pedacitos
+let juntas=0;
+document.querySelectorAll(".pieza").forEach((b,i)=>b.onclick=()=>{
+  if(b.classList.contains("puesta")) return;
+  b.classList.add("puesta"); $("frase").textContent=PIEZAS[i]; juntas++;
+  if(juntas===4){
+    setTimeout(()=>{ $("ep").classList.add("completo"); $("frase").textContent=FRASE_FINAL; },1300);
+    setTimeout(()=>ir(2),4600);
+  }
+});
+
+// Etiqueta
+$("tDe").textContent="De: "+DE;
+$("tPara").textContent="Para: "+PARA+" · "+FECHA;
+
+// 1 → beso
+let iniciado=false;
+function empezar(){
+  if(iniciado) return; iniciado=true;
+  $("btnInicio").style.display="none";
+  $("aviso1").textContent="";
+  document.body.classList.add("climax");
+  $("escena").classList.add("beso");
+  setTimeout(()=>$("escena").classList.add("cierra"), 1700);
+  setTimeout(petalos, 3000);
+  setTimeout(()=>ir(1), 6800);
+}
+$("btnInicio").onclick=empezar;
+$("escena").onclick=empezar;
+
+// 2 → abrir sobre
+function abrir(){
+  ir(3);
+  const c=$("carta"); c.textContent=""; c.classList.remove("cierra"); c.scrollTop=0;
+  CARTA.split("\n\n").forEach((t,i)=>{
+    const p=document.createElement("p"); p.textContent=t;
+    p.style.animationDelay=(0.9+i*0.9)+"s"; c.appendChild(p);
+  });
+}
+$("sobre").onclick=abrir;
+$("sobre").onkeydown=e=>{ if(e.key==="Enter"||e.key===" ") abrir(); };
+
+// 3 → cerrar carta → casete
+$("btnCerrar").onclick=()=>{
+  clearInterval($("carta")._t);
+  $("carta").classList.add("cierra");
+  setTimeout(()=>ir(4), 700);
+};
+
+// 4 → casete
+$("enlace").href=CANCION_URL;
+$("casete").onclick=()=>{
+  $("casete").classList.toggle("suena");
+  window.open(CANCION_URL,"_blank","noopener");
+};
+</script>
+</body>
+</html>
